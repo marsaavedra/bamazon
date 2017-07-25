@@ -112,12 +112,24 @@ function start () {
                 }//--end of if statement for "Add Inventory----
                 
                 if(answer.menu === "Add New Product") {
-                   function addProduct () { 
                        inquirer.prompt([
                         {
                         name: "askID",
                         type: "input",
-                        message: "Type the ID number of the item you want to add inventory to"
+                        message: "Type the ID number of the item you want to add inventory to",
+                        validate: function (value) {
+                            for(var i=0; i< emptyArray.length; i++) {
+                                if (parseInt(value) === emptyArray[i].item_id) {
+                                        console.log(emptyArray[i].item_id);
+					                       console.log("type another ID number");
+                                    
+                                }else {
+                                    break;
+                                }
+                            }
+                            
+                            
+                        }
                         },
                         {
                         name: "productName",
@@ -139,34 +151,25 @@ function start () {
                         type: "input",
                         message: "How many units of the product would you like to add to the inventory?"
                         }
-                       ])}.then(function(answer){
-                        for(var i=0; i< emptyArray.length; i++) {
-                            if(emptyArray[i] === parseInt(answer.askID)) {
-                                console.log("oops, Id name for product already exists, try again");
-                                addProduct();
-                            } else {
-                                addProduct();
-                                break;
-                            }
-                        }
-                    
-                     var query = connection.query(
-                        "INSERT INTO products SET ?",
-                        {
-                          item_id: answer.askID,
-                          product_name: answer.productName,
-                          department_name: answer.departmentName,
-                          price: answer.price,
-                          stock_quantity: answer.askUnits
-                        },
-                        function(err, res) {
-                          console.log(res.affectedRows + " product inserted!\n");
-                          console.log(answer.productName + "was added to the invetory");
-                          
-                            }
-                      
-                        )
-                    });
+                       ]).then(function(answer){
+                        
+                         var query = connection.query(
+                            "INSERT INTO products SET ?",
+                            {
+                              item_id: answer.askID,
+                              product_name: answer.productName,
+                              department_name: answer.departmentName,
+                              price: answer.price,
+                              stock_quantity: answer.askUnits
+                            },
+                            function(err, res) {
+                              console.log(res.affectedRows + " product inserted!\n");
+                              console.log(answer.productName + "was added to the invetory");
+
+                                }
+
+                            )
+                        });
                             
            
         

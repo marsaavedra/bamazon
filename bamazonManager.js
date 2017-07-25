@@ -113,28 +113,24 @@ function start () {
                 
                 if(answer.menu === "Add New Product") {
                        inquirer.prompt([
-                        {
-                        name: "askID",
-                        type: "input",
-                        message: "Type the ID number of the item you want to add inventory to",
-                        validate: function (value) {
-                            for(var i=0; i< emptyArray.length; i++) {
-                                if (parseInt(value) === emptyArray[i].item_id) {
-                                        console.log(emptyArray[i].item_id);
-					                       console.log("type another ID number");
-                                    
-                                }else {
-                                    break;
-                                }
-                            }
-                            
-                            
-                        }
-                        },
+                
                         {
                         name: "productName",
                         type: "input",
-                        message: "What is the name of the product that you would like to add?"
+                        message: "What is the name of the product that you would like to add?",
+                        validate: function (value) {
+                            for(var i=0; i< emptyArray.length; i++) {
+                                if (value == emptyArray[i].product_name) {
+                                    console.log("\n");    
+                                    console.log(emptyArray[i].item_id);
+					                       return "that product already exists type another product";
+                                    
+                                }
+                            } 
+                            return true;
+                            
+                            
+                        }
                         },
                         {
                         name: "departmentName",

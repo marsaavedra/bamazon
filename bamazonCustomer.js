@@ -2,7 +2,7 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 
 var password = require("./password.js");
-//console.log(password);
+
 
 // create the connection information for the sql database
 var connection = mysql.createConnection({
@@ -30,7 +30,7 @@ connection.connect(function(err) {
         
     //creat a loop to sort through the results (res or each row) array of objects
         for(var i =0; i<res.length; i++) {
-            //calling consolidatedData function below and having the for loop run through it allows us to loop through its properties (or column) of our Object called NewProduct (Product is our constructor). 
+            //calling consolidatedData function below and having the for loop run through it allows us to loop through its properties (or columns) of our Object called NewProduct (Product is our constructor). 
         consolidatedData(res[i]);
         }
         //now that we have stored our data into our local machine by placing it into our empty array we can now use it all and begin using our info by calling the start function 
@@ -52,7 +52,7 @@ function start () {
         message: "How many units of the product would you like to buy?"
         }
     ]).then(function(answer){
-        //accessing our data from the empty array (which is running through our objects length)
+        //accessing our data from the empty array (which is running through the lenght of our rows)
         for(var i =0; i<emptyArray.length; i++) {
             
             //for a especific obejct in the array, grab its item ID and compare it to our answer that we inputed that specifies its name label "askID"...
@@ -88,12 +88,6 @@ function start () {
                     console.log("Insufficient quantity! Order cannot be completed");
                 }
     
-                
-                //display total price of purchase to customers
-                //if stock_quantity >0 then display sql databse to reflect new quantity
-        
-        //then show customer the total cost of his purchase
-        //else tell customer there are not enough in stock
             }
         }
         

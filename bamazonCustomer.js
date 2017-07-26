@@ -80,13 +80,12 @@ function start () {
                         }
                       );
                 //------End of SQL update-----
-                    //the tell user its available 
-                    console.log(emptyArray[i].product_name + " is available");
                     //and tell user the total cost of their product which will be the price of item multiplies by the units the of the user's input.
-                    console.log("The total cost of your order is: $" + emptyArray[i].price* answer.askUnits);
+                    console.log("Thank you for your order. Your total is: $" + emptyArray[i].price* answer.askUnits);
                 }else {
                     console.log("Insufficient quantity! Order cannot be completed");
                 }
+                start();
     
             }
         }

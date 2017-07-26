@@ -2,6 +2,7 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 
 var password = require("./password.js");
+var table = require('console.table');
 
 
 // create the connection information for the sql database
@@ -56,14 +57,17 @@ function start () {
     ]).then(function(answer){
         //accessing our data from the empty array (which is running through the lenght of our rows)
             if(answer.menu === "View Products for Sale") {
-                console.log(emptyArray);
+                console.table(emptyArray);
+                start();
             }
+                
             //must create a for loop that goes through all of the rows to determine their characterists
                 if(answer.menu === "View Low Inventory") {
                     for(var i =0; i<emptyArray.length; i++) {
                 //display items with an inventory count lower than 5
                     if(emptyArray[i].stock_quantity < 5) {
                         console.log("Items with low inventory: " + emptyArray[i].product_name);
+                        start();
                     }
                     }
                 }
@@ -105,7 +109,7 @@ function start () {
                                       );
                                 //------End of SQL update-----
                                  console.log(answer.askUnits + " have been added to the "+ emptyArray[i].product_name + "inventory, for a total of " + newQuantity);  
-
+                                start();
                             }
                         }//-----end of for loop
                     });
@@ -161,15 +165,16 @@ function start () {
                             function(err, res) {
                               console.log(res.affectedRows + " product inserted!\n");
                               console.log(answer.productName + "was added to the invetory");
-
+                                start();
                                 }
 
                             )
                         });
                             
-           
+                            
         
     }//----end of add new product
+        
 })//---end of giant promise for all of our options
             };
 

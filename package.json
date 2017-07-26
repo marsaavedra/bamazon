@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/marsaavedra/bamazon#readme",
   "dependencies": {
+    "console": "^0.5.2",
+    "console.table": "^0.8.0",
     "inquirer": "^3.2.0",
-    "mysql": "^2.13.0"
+    "mysql": "^2.13.0",
+    "table": "^4.0.1"
   }
 }

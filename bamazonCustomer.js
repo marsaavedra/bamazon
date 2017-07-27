@@ -42,56 +42,26 @@ connection.connect(function(err) {
 function start () {
     inquirer.prompt([
         {
-        name: "askID",
-        type: "input",
-        message: "Type the ID number of the item you are looking for?"
-        },
-        {
-        name: "askUnits",
-        type: "input",
-        message: "How many units of the product would you like to buy?"
+        type: "list",
+			name: "menu",
+			message: "Please select an option",
+			choices: [
+				"Look for Item",
+                "Quit"
+            ]
         }
+        
     ]).then(function(answer){
         //accessing our data from the empty array (which is running through the lenght of our rows)
-        for(var i =0; i<emptyArray.length; i++) {
-            
-            //for a especific obejct in the array, grab its item ID and compare it to our answer that we inputed that specifies its name label "askID"...
-            if(emptyArray[i].item_id === parseInt(answer.askID)) {
-                
-                //then take the number inputed from askUnits and subtract its from the units currently available in the emptyArray Object. 
-                var newQuantity = emptyArray[i].stock_quantity -= answer.askUnits;
-                //update database to display remaining quantities
-                //------Updating SQL----------
-                    
-                if(newQuantity>0) {
-                    var query = connection.query(
-                        "UPDATE products SET ? WHERE ?",
-                        [
-                          {
-                            stock_quantity: newQuantity
-                          },
-                          {
-                            item_id: emptyArray[i].item_id
-                          }
-                        ],
-                        function(err, res) {
-                          console.log(res.affectedRows + " products updated!\n");
-                          
-                        }
-                      );
-                //------End of SQL update-----
-                    //and tell user the total cost of their product which will be the price of item multiplies by the units the of the user's input.
-                    console.log("Thank you for your order. Your total is: $" + emptyArray[i].price* answer.askUnits);
-                }else {
-                    console.log("Insufficient quantity! Order cannot be completed");
-                }
-                start();
-    
-            }
+        if(answer.menu === "Look for Item") {
+            ask();
         }
-        
-        
-    });
+        if(answer.menu === "Quit") {
+            
+            console.log("Thank you, for your order. Visit us again!");
+            console.log("\n");
+        }
+    }); 
 }
 
 
@@ -121,4 +91,59 @@ function consolidatedData (res) {
     
 }
         
- 
+function ask () {
+    inquirer.prompt([
+        {
+        name: "askID",
+        type: "input",
+        message: "Type the ID number of the item you are looking for?"
+        },
+        {
+        name: "askUnits",
+        type: "input",
+        message: "How many units of the product would you like to buy?"
+        }
+     ]).then(function(answer){
+        //accessing our data from the empty array (which is running through the lenght of our rows)
+        for(var i =0; i<emptyArray.length; i++) {
+            
+            //for a especific obejct in the array, grab its item ID and compare it to our answer that we inputed that specifies its name label "askID"...
+            if(emptyArray[i].item_id === parseInt(answer.askID)) {
+                
+                //then take the number inputed from askUnits and subtract its from the units currently available in the emptyArray Object. 
+                var newQuantity = emptyArray[i].stock_quantity -= answer.askUnits;
+                //update database to display remaining quantities
+                //------Updating SQL----------
+                    
+                if(newQuantity>0) {
+                    var query = connection.query(
+                        "UPDATE products SET ? WHERE ?",
+                        [
+                          {
+                            stock_quantity: newQuantity
+                          },
+                          {
+                            item_id: emptyArray[i].item_id
+                          }
+                        ],
+                        function(err, res) {
+                          //console.log(res.affectedRows + " products updated!\n");
+                          
+                        }
+                      );
+                //------End of SQL update-----
+                    //and tell user the total cost of their product which will be the price of item multiplies by the units the of the user's input.
+                    console.log("Thank you for your order. Your total is: $" + emptyArray[i].price* answer.askUnits);
+                    start();
+                }else {
+                    console.log("Insufficient quantity! Order cannot be completed");
+                    start();
+                }
+                
+    
+            }
+        }
+        
+        
+    })
+};

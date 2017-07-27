@@ -60,6 +60,7 @@ function start () {
         //--------View products--------------
             if(answer.menu === "View Products for Sale") {
                 console.table(emptyArray);
+                start();
                 
             }//--------end of Vier Products----------
                 
@@ -69,10 +70,13 @@ function start () {
                     for(var i =0; i<emptyArray.length; i++) {
                 //display items with an inventory count lower than 5
                     if(emptyArray[i].stock_quantity < 5) {
-                        console.log("Items with low inventory: " + emptyArray[i].product_name);
-                        start();
+                        
+                        console.log( "Low inventory: " + emptyArray[i].product_name);
+                        
+                        
                     }
-                    }
+                    
+                    }start();
                 }//--------end of low inventory
                 //------------Add to inventory-----------
                 if(answer.menu === "Add to Inventory") {
